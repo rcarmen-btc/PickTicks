@@ -59,12 +59,12 @@ def parse_whole_info(first_info='', second_info='', url_to_ticket='', price_text
         'S7 Airlines': 'TemplatePostS7.html',
     }
 
-    use_template = templates_dict.get(replace_dict['{{COMP}}'], 'TemplatePost.html')
+    use_template = 'templates/' + templates_dict.get(replace_dict['{{COMP}}'], 'TemplatePost.html')
 
-    replace_all(use_template, replace_dict, f'{replace_dict["{{DOTS}}"]}-{replace_dict["{{TCODE}}"]}..html', url_to_ticket)
+    replace_all(use_template, replace_dict, f'result_htmls/{replace_dict["{{PRICE}}"]} | {replace_dict["{{DOTS}}"]}-{replace_dict["{{FDA}}"]}-{replace_dict["{{COMP}}"]}.html', url_to_ticket, ticket_iter)
 
 
-def main():
+def main(leave_city, leave_date, come_city, passengers_count):
 
     tick_iter = 0
     # tkinter
@@ -76,10 +76,14 @@ def main():
     # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
     # --- Filters ---
-    leave_city = 'MOW'
-    leave_date = '0905' #DDMM
-    come_city = 'OSS'
-    passengers_count = '1'
+    # leave_city = 'MOW'
+    # leave_date = '0107' #DDMM
+    # come_city = 'OSS'
+
+    # leave_city = 'OSS'
+    # leave_date = '0507' #DDMM
+    # come_city = 'MOW'
+    # passengers_count = '1'
 
     search_url = f'https://www.aviasales.ru/search/{leave_city}{leave_date}{come_city}{passengers_count}?payment_method=all'
 
@@ -96,14 +100,13 @@ def main():
     actions = ActionChains(driver)
     bag_checkbox.click()
     driver.find_element(By.XPATH, "//*[contains(text(), 'Багаж включён')]").click()
-    time.sleep(3)
     driver.find_element(By.XPATH, "//*[contains(text(), 'Без пересадок')]").click()
-    time.sleep(3)
+    time.sleep(2)
 
     # --- Find product list and itarete ---
     data = driver.find_elements(By.XPATH, "//div[@class='product-list__item fade-appear-done fade-enter-done']")
-    print(data)
-    # quit()
+    data += [i for i in driver.find_elements(By.XPATH, "//div[@class='product-list__item fade-enter-done']") if i not in data]
+
     for d in data:
         print('I am here ------->')
         try:
@@ -157,9 +160,12 @@ def main():
         parse_whole_info(first_info, second_info, url_to_ticket, price_text, tick_iter)
         tick_iter += 1
         
+    driver.quit()
 
 if __name__ == '__main__':
-    main()
+    month = '04'
+    for i in range(27, 31):
+        main('MOW', f'{str(i)}{month}', 'OSS')
     print('=======================================================')
     print('=======================SUCCSESS========================')
     print('=======================================================')

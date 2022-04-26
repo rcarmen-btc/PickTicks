@@ -1,10 +1,12 @@
 import sys
 
 
-def replace_all(path_to_src_file: str, replace_dict: dict, res_path: str, url_to_ticket: str):
+def replace_all(path_to_src_file: str, replace_dict: dict, res_path: str, url_to_ticket: str, ti: int):
 
     with open('links.html', 'a') as li:
-        li.write(f"<a href='{res_path}'>{res_path}</a> | <a href='{url_to_ticket}'>Link to ticket</a>")
+        if (ti == 0):
+            li.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">')
+        li.write(f"<li><a href='{res_path}'>{res_path}</a> | <a href='{url_to_ticket}'>Link to ticket</a></li> <br>")
     
     with open(path_to_src_file, 'r') as src:
         raw_data = src.read()
