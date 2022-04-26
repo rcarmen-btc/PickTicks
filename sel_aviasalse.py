@@ -47,7 +47,7 @@ def parse_whole_info(first_info='', second_info='', url_to_ticket='', price_text
         '{{LAIR}}': sp_first_info[13] + sp_first_info[14],
         '{{HB}}': hb,
         '{{GB}}': gb,
-        '{{PRICE}}': price_text,
+        '{{PRICE}}': str(int(price_text.split()[0] + price_text.split()[1]) + 700),
     }
 
     print(replace_dict)
@@ -162,10 +162,15 @@ def main(leave_city, leave_date, come_city, passengers_count):
         
     driver.quit()
 
+
 if __name__ == '__main__':
     month = '04'
     for i in range(27, 31):
-        main('MOW', f'{str(i)}{month}', 'OSS')
+        print(i)
+        main('MOW', f'{str(i)}{month}', 'OSS', 1)
+    for i in range(1, 10):
+        print(i)
+        main('MOW', f'0{str(i)}{month}', 'OSS', 1)
     print('=======================================================')
     print('=======================SUCCSESS========================')
     print('=======================================================')

@@ -5,7 +5,9 @@ from send_posts_bot import main as send_to_me
 
 def main():
     
-    upload_ticks()
+    month = '04'
+    for i in range(27, 31):
+        upload_ticks('MOW', f'{str(i)}{month}', 'OSS', 1)
     handle_png()
     send_to_me()
 
