@@ -61,14 +61,14 @@ def main():
             tmp = num
 
             bot.sendPhoto('643096181', photo=open(file.as_posix(), 'rb'))
-            print('--------------', file.as_posix())
+            # print('--------------', file.as_posix())
                 
             for line in lines:
-                print('--============',line.split('>>><<<')[0])
+                # print('--============',line.split('>>><<<')[0])
                 png_file = line.split('>>><<<')[0]
                 if png_file == file.as_posix():
-                    print('~~~~~~~~~~~~~~~hello')
-                    bot.sendMessage('643096181', line.split('>>><<<')[0])
+                    print('~~~~~~~~~~~~~~~hello~~~~~~url')
+                    bot.sendMessage('643096181', line.split('>>><<<')[1])
                     
 
 if __name__ == '__main__':
