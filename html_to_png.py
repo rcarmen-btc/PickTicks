@@ -19,6 +19,7 @@ def main():
     path = Path('/home/riser/Downloads/Uchkuch/result_htmls')
     files = [i for i in path.iterdir() if i.is_file()]
 
+
     for file in files:
         driver.get(file.as_uri())
         driver.find_element_by_tag_name('html').send_keys(Keys.CONTROL, '-')
@@ -34,6 +35,7 @@ def main():
         sleep(1)
 
     driver.quit()
+
 
 
 if __name__ == '__main__':

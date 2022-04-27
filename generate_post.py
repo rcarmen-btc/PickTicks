@@ -1,7 +1,16 @@
 import sys
+from pathlib import Path
+import os
 
+def replace_all(path_to_src_file: str, replace_dict: dict, res_path: str, url_to_ticket: str, ti: int, url: str):
 
-def replace_all(path_to_src_file: str, replace_dict: dict, res_path: str, url_to_ticket: str, ti: int):
+    # path = Path('/home/riser/Downloads/Uchkuch/result_htmls')
+    # files = [i.as_posix() + '.png' for i in path.iterdir() if i.is_file()]
+
+    # png_file = os.path.splitext(res_path)[0]
+
+    with open('urls_for_bot.txt', 'a') as file:
+        file.write(f'{res_path}.png>>><<<{url}\n')
 
     with open('links.html', 'a') as li:
         if (ti == 0):

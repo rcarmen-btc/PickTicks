@@ -47,7 +47,7 @@ def parse_whole_info(first_info='', second_info='', url_to_ticket='', price_text
         '{{LAIR}}': sp_first_info[13] + sp_first_info[14],
         '{{HB}}': hb,
         '{{GB}}': gb,
-        '{{PRICE}}': str(int(price_text.split()[0] + price_text.split()[1]) + 700),
+        '{{PRICE}}': str(int(price_text.split()[0] + price_text.split()[1]) + 700) + ' ' + price_text.split()[2]
     }
 
     print(replace_dict)
@@ -61,7 +61,13 @@ def parse_whole_info(first_info='', second_info='', url_to_ticket='', price_text
 
     use_template = 'templates/' + templates_dict.get(replace_dict['{{COMP}}'], 'TemplatePost.html')
 
-    replace_all(use_template, replace_dict, f'result_htmls/{replace_dict["{{PRICE}}"]} | {replace_dict["{{DOTS}}"]}-{replace_dict["{{FDA}}"]}-{replace_dict["{{COMP}}"]}.html', url_to_ticket, ticket_iter)
+    day = replace_dict["{{FDA}}"].split()[0]
+    if len(replace_dict["{{FDA}}"].split()[0]) == 1:
+        day = '0' + replace_dict["{{FDA}}"].split()[0]
+    
+    day += ' ' + ' '.join(replace_dict["{{FDA}}"].split()[1:])
+
+    replace_all(use_template, replace_dict, f'/home/riser/Downloads/Uchkuch/result_htmls/{day} | {replace_dict["{{PRICE}}"]} | {replace_dict["{{DOTS}}"]}-{replace_dict["{{COMP}}"]}.html', url_to_ticket, ticket_iter, url_to_ticket)
 
 
 def main(leave_city, leave_date, come_city, passengers_count):
@@ -164,13 +170,9 @@ def main(leave_city, leave_date, come_city, passengers_count):
 
 
 if __name__ == '__main__':
-    month = '04'
-    for i in range(27, 31):
-        print(i)
-        main('MOW', f'{str(i)}{month}', 'OSS', 1)
-    for i in range(1, 10):
-        print(i)
-        main('MOW', f'0{str(i)}{month}', 'OSS', 1)
+    month = '01'
+    i = 1
+    main('MOW', f'0{str(i)}{month}', 'OSS', 1)
     print('=======================================================')
     print('=======================SUCCSESS========================')
     print('=======================================================')
