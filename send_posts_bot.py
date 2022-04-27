@@ -3,6 +3,7 @@ from re import M
 from tkinter.messagebox import NO
 import telepot
 from pathlib import Path
+import pyshorteners as sh
 import sys
 
 
@@ -56,19 +57,20 @@ def main():
             elif min_price > price:
                 min_price = price
                 min_date = date
+
             print(file.as_posix())
 
             tmp = num
 
             bot.sendPhoto('643096181', photo=open(file.as_posix(), 'rb'))
-            # print('--------------', file.as_posix())
                 
             for line in lines:
-                # print('--============',line.split('>>><<<')[0])
                 png_file = line.split('>>><<<')[0]
                 if png_file == file.as_posix():
                     print('~~~~~~~~~~~~~~~hello~~~~~~url')
-                    bot.sendMessage('643096181', line.split('>>><<<')[1])
+                    # bot.sendMessage('643096181', line.split('>>><<<')[1])
+                    bot.sendMessage('643096181', sh.Shortener().tinyurl.short(line.split('>>><<<')[1]))
+                    break
                     
 
 if __name__ == '__main__':
