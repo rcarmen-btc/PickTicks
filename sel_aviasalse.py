@@ -1,5 +1,4 @@
-# import pandas as pd
-import re
+import telepot
 import time
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -91,12 +90,13 @@ def main(leave_city, leave_date, come_city, passengers_count):
     # come_city = 'MOW'
     # passengers_count = '1'
 
+    bot = telepot.Bot('5368170502:AAF0PWez1Jyg713jReowJ1RcQA7Yn7XwQjk')
     search_url = f'https://www.aviasales.ru/search/{leave_city}{leave_date}{come_city}{passengers_count}?payment_method=all'
 
     # --- Define actions --- 
     actions = ActionChains(driver)
     driver.get(search_url)
-    time.sleep(6)
+    time.sleep(5)
 
     # --- Click cookie button ---
     driver.find_element(By.CLASS_NAME, 'j6SdG_CNzTHR3lNJdcfl').find_element(By.TAG_NAME, 'button').click()
@@ -112,8 +112,10 @@ def main(leave_city, leave_date, come_city, passengers_count):
     # --- Find product list and itarete ---
     data = driver.find_elements(By.XPATH, "//div[@class='product-list__item fade-appear-done fade-enter-done']")
     data += [i for i in driver.find_elements(By.XPATH, "//div[@class='product-list__item fade-enter-done']") if i not in data]
+    bot.sendMessage('643096181', f'Примерно {len(data)} билетов')
 
-    for d in data:
+    for i, d in enumerate(data):
+        bot.sendMessage('643096181', f'Начало обработки билета #{i + 1}...')
         print('I am here ------->')
         try:
             # --- Click select ticket ---
@@ -166,6 +168,8 @@ def main(leave_city, leave_date, come_city, passengers_count):
         parse_whole_info(first_info, second_info, url_to_ticket, price_text, tick_iter)
         tick_iter += 1
         
+        bot.sendMessage('643096181', f'Конец обработки билета #{i + 1}!!!')
+
     driver.quit()
 
 

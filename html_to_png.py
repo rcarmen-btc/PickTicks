@@ -4,10 +4,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from selenium.webdriver.chrome.options import Options
-
 from PIL import Image
 from pathlib import Path
-import sys
+
 
 def main():
     
