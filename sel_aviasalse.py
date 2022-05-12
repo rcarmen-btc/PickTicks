@@ -20,8 +20,7 @@ def parse_whole_info(first_info='', second_info='', url_to_ticket='', price_text
     sp_second_info = [el.strip() for el in second_info.strip().split('\n')]
     print(sp_second_info)
 
-
-    if sp_second_info[sp_second_info.index('Ручная кладь') + 2] !='Сдаваемый багаж': 
+    if sp_second_info[sp_second_info.index('Ручная кладь') + 2] !='Сдаваемый багаж':
         hb = sp_second_info[sp_second_info.index('Ручная кладь') + 1] # + sp_second_info[sp_second_info.index('Ручная кладь') + 2] 
     else: 
         hb = 'включена'
@@ -99,7 +98,7 @@ def main(leave_city, leave_date, come_city, passengers_count):
     time.sleep(5)
 
     # --- Click cookie button ---
-    driver.find_element(By.CLASS_NAME, 'j6SdG_CNzTHR3lNJdcfl').find_element(By.TAG_NAME, 'button').click()
+    driver.find_element(By.CLASS_NAME, 'y2gjNiIS0o1RA_5Ebnkw').find_element(By.TAG_NAME, 'button').click()
 
     # --- Side filters actions ---
     bag_checkbox = driver.find_element(By.XPATH, "//*[contains(text(), 'Багаж')]")
@@ -107,11 +106,14 @@ def main(leave_city, leave_date, come_city, passengers_count):
     bag_checkbox.click()
     driver.find_element(By.XPATH, "//*[contains(text(), 'Багаж включён')]").click()
     driver.find_element(By.XPATH, "//*[contains(text(), 'Без пересадок')]").click()
+    # search = driver.find_element(By.XPATH, "//*[contains(text(), 'Найти билеты')]")
+    # actions.move_to_element(search)
+    # search.click()
     time.sleep(2)
 
     # --- Find product list and itarete ---
-    data = driver.find_elements(By.XPATH, "//div[@class='product-list__item fade-appear-done fade-enter-done']")
-    data += [i for i in driver.find_elements(By.XPATH, "//div[@class='product-list__item fade-enter-done']") if i not in data]
+    data = driver.find_elements(By.XPATH, "//div[@class='']")
+    data += [i for i in driver.find_elements(By.XPATH, "//div[@class='ZQkQsV19K3oyXJQ_CdiJ']") if i not in data]
     bot.sendMessage('643096181', f'Примерно {len(data)} билетов')
 
     for i, d in enumerate(data):
@@ -131,7 +133,10 @@ def main(leave_city, leave_date, come_city, passengers_count):
         time.sleep(2)
 
         # Coast of ticket
-        price_text = driver.find_element(By.XPATH, "//span[@class='price_5dd3743 price-info__text']").text
+        try:
+            price_text = driver.find_element(By.XPATH, "//span[@class='price_5dd3743 price-info__text']").text
+        except:
+            continue
 
         # Save url to ticket
         driver.find_element(By.XPATH, "//*[contains(text(), 'Поделиться')]").click()
@@ -164,8 +169,11 @@ def main(leave_city, leave_date, come_city, passengers_count):
         driver.execute_script("window.history.go(-1)")
         driver.execute_script("window.history.go(-1)")
         time.sleep(1)
-        
-        parse_whole_info(first_info, second_info, url_to_ticket, price_text, tick_iter)
+
+        try: 
+            parse_whole_info(first_info, second_info, url_to_ticket, price_text, tick_iter)
+        except:
+            continue
         tick_iter += 1
         
         bot.sendMessage('643096181', f'Конец обработки билета #{i + 1}!!!')
